@@ -35,16 +35,14 @@ In this project, We have tried to make a FULL-STACK project by manipulating dom 
 
 This is a collaborative project built within 2 days by a team of 4 members.
 
---> Anurag Choudhary--> BackEnd (SpringBoot) & Database (MySQL).
 
-
---> Gitesh Sutar --> BackEnd (SpringBoot) & Database (MySQL).
-
-
---> Samay Dhawale  --> Landing Page.
-
-
---> Saurabh Bhatt  --> Interview Master Page.
+ ## Contributors <br/>
+ - Anurag Choudhary {BackEnd (SpringBoot) & Database (MySQL)}<br/>
+ - Gitesh Sutar {BackEnd (SpringBoot) & Database (MySQL)}<br/>
+ - Samay Dhawale { Landing Page }<br/>
+ - Saurabh Bhatt { Interview Master Page }<br/>
+ 
+ <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 Tech Stack :
@@ -52,11 +50,23 @@ Tech Stack :
 [![My Skills](https://skillicons.dev/icons?i=java,spring,maven,mysql,github,postman,hibernate,react,typescript,css,vscode&theme=light)](https://skillicons.dev)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-For storing user data we also used MongoDB Atlas.
+For storing user data we also used MySQL.
 
-## How to run the Project
+## How to run the Project (FrontEnd)
 * Open the pages directory.
 * Clone this repo and run using the live server command 'npm run start'.
 
+### Installation (BackEnd)
+
+First, clone the project and let STS4 build its dependencies. Maven --> Update Project -->Run as SpringBoot
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/anuragjatofficial/code-pulse
+   ```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## End Notes 📑
-In this project, we have tried to achieve a near-to-perfect clone of the original website images provided as much as possible. This entire journey of this construct week has given us experiences and we have learned lots of things by applying to the actual website and it gave us a lot of confidence. Most of the features are added and the functionality of the website is achieved.
+This entire journey of this Hackathon has given us experiences and we have learned lots of things by applying to the actual website and it gave us a lot of confidence. Most of the features are added and the Application's functionality is achieved.
