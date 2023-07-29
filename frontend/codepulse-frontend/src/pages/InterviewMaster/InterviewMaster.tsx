@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
 import styled from "styled-components";
 import micon from "./images/micon.png";
 import micoff from "./images/micoff.png";
 import logo from "../../images/codepulseLogo.svg";
+import axios from "axios";
 
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -11,9 +12,7 @@ import SpeechRecognition, {
 
 // import { useSpeechSynthesis } from 'react-speech-kit';
 import { TextToSpeech, Positions, Sizes } from "tts-react";
-
-
-
+import { constants } from "crypto";
 
 const InterviewMaster = () => {
   const {
@@ -23,9 +22,69 @@ const InterviewMaster = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  const username = localStorage.getItem('username');
+  const [question, setQuestion] = useState("");
+  const [isload, setLoading] = useState(false);
+  const [obj, setObj] = useState({questionAnswerId: -1, question: "", answer:''})
+  const [nextQue, setnextQue] = useState("")
+  const [feedback, setFeedback] = useState({})
 
-  // const { speak, voices } = useSpeechSynthesis();
+  const username = localStorage.getItem("username");
+
+  const getQuestion = async () => {
+    try {
+      setLoading(true);
+      const data = await axios.get(
+        `https://codepulse.up.railway.app/start?username=${username}`
+      );
+      setLoading(false);
+
+      console.log(data.data);
+      setObj(data.data)
+      setQuestion(data.data.question);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit =()=>{
+
+
+    let newObj = {...obj, answer:transcript}
+
+
+      axios({
+        method: 'post',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        url: `https://codepulse.up.railway.app/users/${username}/chat`,
+        data:JSON.stringify(newObj)
+      })
+      .then((res)=>{
+       
+        console.log(res.data)
+        setObj(res.data)
+        setQuestion("")
+        setnextQue(res.data.question)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    
+    }
+
+    
+
+  console.log(nextQue)
+
+  useEffect(() => {
+    const timer = setTimeout(()=>{
+      getQuestion();
+    },5000)
+
+    // return clearTimeout(timer)
+   
+  }, []);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -47,46 +106,53 @@ const InterviewMaster = () => {
   const handleReset = () => {
     resetTranscript();
   };
-
+console.log(obj)
   return (
     <>
       <NAV>
-        
-          <div>
-           <a href="/">
-            <img src={logo} style={{width :"25%"}}/>
-           </a>
-          </div>
+        <div>
+          <a href="/">
+            <img src={logo} style={{ width: "25%" }} />
+          </a>
+        </div>
 
-          <DIV0 className="head">
-            <h1>Interview Master 1.0.0</h1>
-          </DIV0>
-          <DIV1>
-            <Timer />
-          </DIV1>
-
+        <DIV0 className="head">
+          <h1>Interview Master 1.0.0</h1>
+        </DIV0>
+        <DIV1>
+          <Timer />
+        </DIV1>
       </NAV>
 
-
-        <div style={{width:"20%", margin:"auto"}}>
-          <h1>User : {username}</h1>
-        </div>
+      <div style={{ width: "100%", margin: "auto", textAlign: "center" }}>
+        <h1>User : {username}</h1>
+      </div>
 
       <DIV2>
         <div className="div1">
-
-
-          <p style={{color :"white", backgroundColor :"#0b6947", borderRadius : "10px",padding:"5px"}}>Question</p>
+          <p
+            style={{
+              color: "white",
+              backgroundColor: "#0b6947",
+              borderRadius: "10px",
+              padding: "5px",
+            }}
+          >
+            Question
+          </p>
 
           <textarea
             className="textfield"
             cols={20}
             rows={5}
             wrap="soft"
+            value={isload ? "Loading Question..." : question || nextQue}
           ></textarea>
 
           <div>
-            <button
+            {
+            !obj.questionAnswerId&&
+              <button
               className="nextbtn"
               style={{ marginTop: "20px" }}
               disabled={transcript.length === 0}
@@ -94,13 +160,23 @@ const InterviewMaster = () => {
                 alert(`hi`);
               }}
             >
-              Next Question
+              View Scorecard
             </button>
+            }
           </div>
         </div>
 
         <div className="div2">
-          <p style={{color :"white", backgroundColor :"#0b6947", borderRadius : "10px",padding:"5px"}} >Your Response</p>
+          <p
+            style={{
+              color: "white",
+              backgroundColor: "#0b6947",
+              borderRadius: "10px",
+              padding: "5px",
+            }}
+          >
+            Your Response
+          </p>
 
           <div className="div2-1">
             <TextToSpeech
@@ -126,20 +202,27 @@ const InterviewMaster = () => {
             {/* <p>Microphone: {listening ? "on" : "off"}</p> */}
 
             {listening ? (
-              <img onClick={stopListening} src={micoff} />
+              <img
+                onClick={stopListening}
+                src={micon}
+                style={{ cursor: "pointer" }}
+              />
             ) : (
-              <img onClick={startListening} src={micon} />
+              <img
+                onClick={startListening}
+                src={micoff}
+                style={{ cursor: "pointer" }}
+              />
             )}
+
             <button className="reset" onClick={handleReset}>
               Reset
             </button>
 
             <button
               className="reset"
-              disabled={transcript.length === 0}
-              onClick={() => {
-                alert(`hi`);
-              }}
+              disabled={transcript.length === 0 || !obj.questionAnswerId}
+              onClick={ handleSubmit}
             >
               Submit
             </button>
@@ -152,18 +235,15 @@ const InterviewMaster = () => {
 
 export default InterviewMaster;
 
-
 const NAV = styled.div`
   // border : 1px solid red;
-  width : 90%;
-  margin :auto;
-  display : flex;
-  justify-content : center;
-  align-items : center;
-  margin-bottom : 60px;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
 `;
-
-
 
 const DIV0 = styled.div`
   width: 20%;
@@ -186,17 +266,16 @@ const DIV1 = styled.div`
 `;
 const DIV2 = styled.div`
   width: 70%;
-  margin-left: 260px;
-  margin-right: auto;
-  margin-top: 20px;
+  // margin-left: 260px;
+  // margin-right: auto;
+  // margin-top: 20px;
+  margin: auto;
   text-align: center;
   padding: 35px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
-
-  background-color : #C8E6C9;
 
   .maindiv {
     border: 1px solid;
@@ -213,13 +292,20 @@ const DIV2 = styled.div`
       rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
     padding: 20px;
     border-radius: 10px;
+    background-color: transparent;
+  }
+  .textfield:focus {
+    border-color: #0b6947;
+    outline: none;
+    box-shadow: 0 0 8px 0 #0b6947;
   }
 
-  .div1, .div2 {
+  .div1,
+  .div2 {
     // border: 1px solid;
     width: 40%;
-    padding : 20px;
-    border-radius : 20px;
+    padding: 20px;
+    border-radius: 20px;
   }
 
   .div2 img {

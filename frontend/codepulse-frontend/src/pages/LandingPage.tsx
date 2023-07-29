@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import codepulseLogo from "../images/codepulseLogo.svg";
 import aiImage from "../images/aiImage.svg";
+import axios from "axios"
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
 const [username, setUsername] = useState("")
 const [role, setRole] = useState("")
 
+
+
 const handleStart =()=>{
+  const obj={
+    interviewType: role,
+    username: username
+  }
+  
+  axios.post("https://codepulse.up.railway.app/users",obj)
+  .then((res)=>{
+    console.log(res.data)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
   localStorage.setItem("username", username);
 }
 
@@ -88,9 +103,9 @@ const handleStart =()=>{
                 onChange={(e)=> {setRole(e.target.value)}}
               >
                 <option value="Select Roles">Select Your Role</option>
-                <option value="Select Roles">MERN</option>
-                <option value="Select Roles">JAVA</option>
-                <option value="Select Roles">NODE</option>
+                <option value="mern">MERN</option>
+                <option value="java">JAVA</option>
+                <option value="node">NODE</option>
               </select>
             </label>
           </div>
