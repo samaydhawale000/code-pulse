@@ -3,7 +3,7 @@ import Timer from "./Timer";
 import styled from "styled-components";
 import micon from "./images/micon.png";
 import micoff from "./images/micoff.png";
-import logo from "./images/logo.jpg";
+import logo from "../../images/codepulseLogo.svg";
 
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -12,6 +12,9 @@ import SpeechRecognition, {
 // import { useSpeechSynthesis } from 'react-speech-kit';
 import { TextToSpeech, Positions, Sizes } from "tts-react";
 
+
+
+
 const InterviewMaster = () => {
   const {
     transcript,
@@ -19,6 +22,8 @@ const InterviewMaster = () => {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
+  const username = localStorage.getItem('username');
 
   // const { speak, voices } = useSpeechSynthesis();
 
@@ -64,9 +69,9 @@ const InterviewMaster = () => {
 
 
         <div style={{width:"20%", margin:"auto"}}>
-          <h1>User : </h1>
+          <h1>User : {username}</h1>
         </div>
-        
+
       <DIV2>
         <div className="div1">
 

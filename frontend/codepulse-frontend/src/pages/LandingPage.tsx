@@ -6,6 +6,11 @@ import { Link } from "react-router-dom";
 export default function LandingPage() {
 const [username, setUsername] = useState("")
 const [role, setRole] = useState("")
+
+const handleStart =()=>{
+  localStorage.setItem("username", username);
+}
+
   return (
     <div style={{ width: "100%" }}>
       <img
@@ -61,6 +66,7 @@ const [role, setRole] = useState("")
                 type="text"
                 placeholder="ex : codePulse"
                 className="landinginputs"
+                onChange={(e)=> {setUsername(e.target.value)}}
               />
             </label>
             <label style={{ width: "45%" }}>
@@ -79,6 +85,7 @@ const [role, setRole] = useState("")
                   marginTop:"4px",
                   border:" 1px solid #0B6947"
                 }}
+                onChange={(e)=> {setRole(e.target.value)}}
               >
                 <option value="Select Roles">Select Your Role</option>
                 <option value="Select Roles">MERN</option>
@@ -89,7 +96,7 @@ const [role, setRole] = useState("")
           </div>
           <div style={{width:"155px"}}>
             <Link to="/interview_Master" style={{textDecoration:"none"}}>
-            <button className="landingBtn" >Start Interview</button>
+            <button className="landingBtn" disabled = {!username && !role} onClick={()=>{handleStart()}}>Start Interview</button>
             </Link>
           
           </div>
