@@ -56,7 +56,8 @@ const Timer: React.FC = () => {
       <h1>{formatTime(timeLeft)}</h1>
 
       <button
-        className='endbtn'
+        // className='endbtn'
+        className="landingBtn"
         onClick={handleEndSession}
         disabled={!isTimerRunning || timeLeft > 0}
       >

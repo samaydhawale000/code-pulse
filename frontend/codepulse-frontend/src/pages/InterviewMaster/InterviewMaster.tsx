@@ -6,6 +6,11 @@ import micoff from "./images/micoff.png";
 import logo from "../../images/codepulseLogo.svg";
 import axios from "axios";
 
+import Swal from 'sweetalert2';
+
+
+
+
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -24,9 +29,13 @@ const InterviewMaster = () => {
 
   const [question, setQuestion] = useState("");
   const [isload, setLoading] = useState(false);
-  const [obj, setObj] = useState({questionAnswerId: -1, question: "", answer:''})
-  const [nextQue, setnextQue] = useState("")
-  const [feedback, setFeedback] = useState({})
+  const [obj, setObj] = useState({
+    questionAnswerId: -1,
+    question: "",
+    answer: "",
+  });
+  const [nextQue, setnextQue] = useState("");
+  const [feedback, setFeedback] = useState({});
 
   const username = localStorage.getItem("username");
 
@@ -39,51 +48,43 @@ const InterviewMaster = () => {
       setLoading(false);
 
       console.log(data.data);
-      setObj(data.data)
+      setObj(data.data);
       setQuestion(data.data.question);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSubmit =()=>{
+  const handleSubmit = () => {
+    let newObj = { ...obj, answer: transcript };
 
-
-    let newObj = {...obj, answer:transcript}
-
-
-      axios({
-        method: 'post',
-        headers:{
-          "Content-Type":"application/json"
-        },
-        url: `https://codepulse.up.railway.app/users/${username}/chat`,
-        data:JSON.stringify(newObj)
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      url: `https://codepulse.up.railway.app/users/${username}/chat`,
+      data: JSON.stringify(newObj),
+    })
+      .then((res) => {
+        console.log(res.data);
+        setObj(res.data);
+        setQuestion("");
+        setnextQue(res.data.question);
       })
-      .then((res)=>{
-       
-        console.log(res.data)
-        setObj(res.data)
-        setQuestion("")
-        setnextQue(res.data.question)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
-    
-    }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    
-
-  console.log(nextQue)
+  console.log(nextQue);
 
   useEffect(() => {
-    const timer = setTimeout(()=>{
+    const timer = setTimeout(() => {
       getQuestion();
-    },5000)
+    }, 5000);
 
     // return clearTimeout(timer)
-   
   }, []);
 
   if (!browserSupportsSpeechRecognition) {
@@ -106,7 +107,6 @@ const InterviewMaster = () => {
   const handleReset = () => {
     resetTranscript();
   };
-console.log(obj)
   return (
     <>
       <NAV>
@@ -150,19 +150,24 @@ console.log(obj)
           ></textarea>
 
           <div>
-            {
-            !obj.questionAnswerId&&
+            {!obj.questionAnswerId && (
               <button
-              className="nextbtn"
-              style={{ marginTop: "20px" }}
-              disabled={transcript.length === 0}
-              onClick={() => {
-                alert(`hi`);
-              }}
-            >
-              View Scorecard
-            </button>
-            }
+                // className="nextbtn"
+                className="landingBtn"
+                style={{ marginTop: "20px" }}
+                disabled={transcript.length === 0}
+                onClick={() => {
+
+                  
+                  Swal.fire({
+                    text: `${obj.answer}`,
+                    confirmButtonColor: '#0B6947',
+                  })
+                }}
+              >
+                View Scorecard
+              </button>
+            )}
           </div>
         </div>
 
@@ -215,14 +220,15 @@ console.log(obj)
               />
             )}
 
-            <button className="reset" onClick={handleReset}>
+            <button className="landingBtn" onClick={handleReset}>
               Reset
             </button>
 
             <button
-              className="reset"
+              // className="reset"
+              className="landingBtn"
               disabled={transcript.length === 0 || !obj.questionAnswerId}
-              onClick={ handleSubmit}
+              onClick={handleSubmit}
             >
               Submit
             </button>
@@ -248,17 +254,18 @@ const NAV = styled.div`
 const DIV0 = styled.div`
   width: 20%;
   margin: auto;
+  padding-right : 40px;
   text-align: center;
   // border: 1px solid;
 `;
 
 const DIV1 = styled.div`
-  width: 10%;
+  width: 155px;
   margin-left: auto;
   margin-right: 20px;
   margin-top: 20px;
   text-align: center;
-  padding: 5px 20px;
+  padding: 5px 30px;
   padding-bottom: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
@@ -309,7 +316,7 @@ const DIV2 = styled.div`
   }
 
   .div2 img {
-    width: 12%;
+    width: 9%;
     border-radius: 50%;
     padding: 8px;
     background-color: #26a69a;
@@ -328,7 +335,7 @@ const DIV2 = styled.div`
   }
 
   .div2-2 {
-    width: 70%;
+    width: 100%;
     display: flex;
     margin: auto;
     justify-content: space-around;

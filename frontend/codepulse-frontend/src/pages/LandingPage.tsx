@@ -109,7 +109,7 @@ const handleStart =()=>{
               </select>
             </label>
           </div>
-          <div style={{width:"155px"}}>
+          <div style={{width:"155px",marginTop:"30px"}}>
             <Link to="/interview_Master" style={{textDecoration:"none"}}>
             <button className="landingBtn" disabled = {!username && !role} onClick={()=>{handleStart()}}>Start Interview</button>
             </Link>

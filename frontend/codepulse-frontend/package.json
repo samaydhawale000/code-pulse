@@ -17,6 +17,7 @@
     "react-scripts": "5.0.1",
     "react-speech-recognition": "^3.10.0",
     "styled-components": "^6.0.5",
+    "sweetalert2": "^11.7.20",
     "tts-react": "^3.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
