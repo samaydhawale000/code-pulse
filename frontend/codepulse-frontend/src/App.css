@@ -1,8 +1,21 @@
 
-
-
-* {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  font-size: 22px;
+.landingBtn{
+    background-image:  linear-gradient(to right, #03432b, #0B6947);
+    color: #fff;
+    margin: auto;
+    border: none;
+    width: 150px;
+    height: 45px;
+    margin-top: 30px;
+    font-size: 16px;
+    transition: 0.5s;
+    border-radius: 2px;
+    display: block;
+    cursor: pointer;
+}
+.landingBtn:hover{
+    background-image:  linear-gradient(to right, #0B6947, #03432b);
+    transition: 0.5s;
+    width: 155px;
+    height: 48px;
 }
