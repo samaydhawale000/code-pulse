@@ -123,7 +123,7 @@ const handleStart =()=>{
                 Swal.fire({
                   icon: 'error',
                   title: 'Oops...',
-                  text: 'All fields are importtant to move further, please provide all information',
+                  text: 'Username and role both are important to move further, please provide all information',
                   confirmButtonColor: '#0B6947',
                 })
               }
