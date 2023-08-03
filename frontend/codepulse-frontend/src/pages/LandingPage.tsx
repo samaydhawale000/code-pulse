@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import codepulseLogo from "../images/codepulseLogo.svg";
 import aiImage from "../images/aiImage.svg";
 import axios from "axios"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
 const [username, setUsername] = useState("")
 const [role, setRole] = useState("")
 
+const navigate = useNavigate()
 
 
 const handleStart =()=>{
@@ -110,14 +113,26 @@ const handleStart =()=>{
             </label>
           </div>
           <div style={{width:"155px",marginTop:"30px"}}>
-            <Link to="/interview_Master" style={{textDecoration:"none"}}>
-            <button className="landingBtn" disabled = {!username && !role} onClick={()=>{handleStart()}}>Start Interview</button>
-            </Link>
+            <button className="landingBtn" onClick={()=>{
+              if(username && role){
+                navigate("/interview_Master");
+
+                handleStart()
+              }
+              else{
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'All fields are importtant to move further, please provide all information',
+                  confirmButtonColor: '#0B6947',
+                })
+              }
+              }}>Start Interview</button>
           
           </div>
           
         </div>
-        <div></div>
+        
       </div>
     </div>
   );
