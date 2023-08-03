@@ -1,4 +1,3 @@
-# code-pulse
 
 # CODE PULSE
 
